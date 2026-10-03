@@ -15,17 +15,30 @@ export default function ParticipantsButton({ people }: { people?: Person[] }) {
   return (
     <div>
       <dt className="text-gray-500">Participants</dt>
-      <dd>
+      <dd className="flex h-6 items-center gap-2">
+        <span className="font-bold">{list.length}</span>
         <button
           type="button"
           onClick={() => setOpen(true)}
-          aria-label={`Show the list of ${list.length} participants`}
-          className="inline-flex items-center gap-0.5 rounded-md bg-blue-50 px-2 text-sm font-bold text-blue-700 ring-1 ring-blue-200 transition hover:bg-blue-100 active:bg-blue-200"
+          aria-label={`View the list of ${list.length} participants`}
+          title="View participants"
+          // the ::after widens the tap area without changing the layout
+          className="relative inline-flex h-6 w-6 items-center justify-center rounded-md text-blue-700 transition after:absolute after:-inset-2 after:content-[''] hover:bg-blue-50 active:bg-blue-100"
         >
-          {list.length}
-          <span aria-hidden="true" className="text-xs leading-none">
-            
-          </span>
+          <svg
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
         </button>
       </dd>
 

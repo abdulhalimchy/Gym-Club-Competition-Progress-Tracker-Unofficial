@@ -4,6 +4,7 @@ export const eventDetails = {
   name: "Gym Club Competition",
   start_date: "2026-10-01",
   end_date: "2026-10-31",
+  description: `FIRST GYM CLUB COMPETITION!! The competition consists of going to the gym, and after your workout sending a gym pic at the gym to the chat! The person that showed up THE MOST during the month of October will win a PRIZE!!! Get ready and go gym💪💪🔥 The competition starts 1.10 and ends the 31.10 P.S. Other types of workouts, like going on a run, crossfit, guided trainings etc count as well!!`
 };
 
 export const participants: Participant[] = [
