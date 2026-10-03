@@ -41,3 +41,33 @@ export function formatDate(iso: string, withYear = false) {
     ...(withYear ? { year: "numeric" } : {}),
   });
 }
+
+export type DayRow = {
+  date: string;
+  count: number;
+  people: { name: string; activity: string }[];
+};
+
+function addDays(iso: string, n: number) {
+  const d = new Date(iso + "T00:00:00Z");
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
+}
+
+// One row per day from start_date to the last recorded day (days with no entries get count 0)
+export function getDailyRows(): DayRow[] {
+  const nameById = Object.fromEntries(participants.map((p) => [p.id, p.name]));
+  const dates = Object.keys(participation).sort();
+  if (dates.length === 0) return [];
+
+  const last = dates[dates.length - 1];
+  const rows: DayRow[] = [];
+  for (let d = eventDetails.start_date; d <= last; d = addDays(d, 1)) {
+    const people = (participation[d] ?? []).map(([id, activity]) => ({
+      name: nameById[id] ?? id,
+      activity,
+    }));
+    rows.push({ date: d, count: people.length, people });
+  }
+  return rows;
+}

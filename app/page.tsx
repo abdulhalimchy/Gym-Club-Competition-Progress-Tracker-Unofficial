@@ -1,6 +1,8 @@
+import DailyChart from "@/components/DailyChart";
+import ParticipantsButton from "@/components/ParticipantsButton";
 import ParticipationChart from "@/components/ParticipationChart";
-import { eventDetails, participants } from "@/data/competition";
-import { formatDate, getRows, getStatus } from "@/lib/stats";
+import { eventDetails } from "@/data/competition";
+import { formatDate, getDailyRows, getRows, getStatus } from "@/lib/stats";
 
 // Re-check status (Upcoming/Running/Completed) at least hourly on Vercel
 export const revalidate = 3600;
@@ -14,6 +16,7 @@ const badge = {
 export default function Home() {
   const status = getStatus();
   const rows = getRows();
+  const daily = getDailyRows();
 
   return (
     <main className="mx-auto max-w-2xl space-y-6 p-4 sm:p-8">
@@ -31,14 +34,12 @@ export default function Home() {
             <dt className="text-gray-500">End</dt>
             <dd className="font-medium">{formatDate(eventDetails.end_date, true)}</dd>
           </div>
-          <div>
-            <dt className="text-gray-500">Participants</dt>
-            <dd className="font-medium">{participants.length}</dd>
-          </div>
+          <ParticipantsButton people={rows.map(({ id, name, count }) => ({ id, name, count }))} />
         </dl>
       </header>
 
       <ParticipationChart rows={rows} />
+      <DailyChart rows={daily} />
     </main>
   );
 }

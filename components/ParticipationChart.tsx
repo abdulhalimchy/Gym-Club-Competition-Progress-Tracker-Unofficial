@@ -1,20 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Bar, BarChart, LabelList, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import Sheet from "./Sheet";
+import { fmtDate, plural } from "@/lib/format";
 
 type DayEntry = { date: string; activity: string };
 type Row = { id: string; name: string; count: number; days: DayEntry[] };
-
-function fmt(iso: string) {
-  return new Date(iso + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" });
-}
 
 export default function ParticipationChart({ rows }: { rows: Row[] }) {
   const [limit, setLimit] = useState("20");
   const [selected, setSelected] = useState<Row | null>(null);
 
-  const shown = limit === "all" ? rows : rows.slice(0, Number(limit));
+  // memoised so the chart doesn't get a "new" data array (and re-animate) every time the sheet opens
+  const shown = useMemo(() => (limit === "all" ? rows : rows.slice(0, Number(limit))), [rows, limit]);
   const height = Math.max(shown.length * 36 + 20, 120);
 
   return (
@@ -35,7 +34,12 @@ export default function ParticipationChart({ rows }: { rows: Row[] }) {
 
       <div className="rounded-xl border border-gray-200 bg-white p-2">
         <ResponsiveContainer width="100%" height={height}>
-          <BarChart data={shown} layout="vertical" margin={{ left: 0, right: 30, top: 5, bottom: 5 }}>
+          <BarChart
+            accessibilityLayer={false}
+            data={shown}
+            layout="vertical"
+            margin={{ left: 0, right: 30, top: 5, bottom: 5 }}
+          >
             <XAxis type="number" hide />
             <YAxis
               type="category"
@@ -51,6 +55,7 @@ export default function ParticipationChart({ rows }: { rows: Row[] }) {
               fill="#2563eb"
               radius={[0, 4, 4, 0]}
               barSize={22}
+              isAnimationActive={false}
               cursor="pointer"
               onClick={(_, index) => setSelected(shown[index])}
             >
@@ -62,37 +67,20 @@ export default function ParticipationChart({ rows }: { rows: Row[] }) {
       <p className="mt-2 text-xs text-gray-500">Tap a bar to see daily activity.</p>
 
       {selected && (
-        <div
-          className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 sm:items-center"
-          onClick={() => setSelected(null)}
-        >
-          <div
-            className="max-h-[80vh] w-full overflow-y-auto rounded-t-2xl bg-white p-5 sm:max-w-md sm:rounded-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="mb-3 flex items-start justify-between">
-              <div>
-                <h3 className="text-lg font-semibold">{selected.name}</h3>
-                <p className="text-sm text-gray-500">{selected.count} days</p>
-              </div>
-              <button onClick={() => setSelected(null)} className="text-2xl leading-none text-gray-400">
-                ×
-              </button>
-            </div>
-            {selected.days.length === 0 ? (
-              <p className="text-sm text-gray-500">No activity yet.</p>
-            ) : (
-              <ul className="space-y-2">
-                {selected.days.map((d) => (
-                  <li key={d.date} className="flex gap-3 text-sm">
-                    <span className="w-14 shrink-0 font-medium">{fmt(d.date)}</span>
-                    <span>{d.activity}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
+        <Sheet title={selected.name} subtitle={plural(selected.count, "day")} onClose={() => setSelected(null)}>
+          {selected.days.length === 0 ? (
+            <p className="text-sm text-gray-500">No activity yet.</p>
+          ) : (
+            <ul className="space-y-2">
+              {selected.days.map((d) => (
+                <li key={d.date} className="flex gap-3 text-sm">
+                  <span className="w-14 shrink-0 font-medium">{fmtDate(d.date)}</span>
+                  <span>{d.activity}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Sheet>
       )}
     </section>
   );
