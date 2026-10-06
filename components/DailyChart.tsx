@@ -35,7 +35,8 @@ export default function DailyChart({ rows }: { rows: Day[] }) {
             barCategoryGap={0}
             margin={{ left: 0, right: 30, top: 8, bottom: 8 }}
           >
-            <XAxis type="number" hide />
+            {/* "dataMax" makes the longest bar fill the width; the default rounds the max up to a "nice" number */}
+            <XAxis type="number" hide domain={[0, "dataMax"]} />
             <YAxis
               type="category"
               dataKey="label"
