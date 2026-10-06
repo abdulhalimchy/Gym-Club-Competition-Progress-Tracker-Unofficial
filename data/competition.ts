@@ -31,6 +31,7 @@ export const participants: Participant[] = [
     { id: "p21", name: "Selma" },
     { id: "p22", name: "Vasaris" },
     { id: "p23", name: "Ali Onur Özkan" },
+    { id: "p24", name: "Arjun" },
 ];
 
 // date -> list of [participant_id, activity]
@@ -107,5 +108,24 @@ export const participation: Record<string, [string, string][]> = {
     ["p14", "Gym - Pull Day"],
     ["p10", "Running"],
     ["p12", "Gym - Back & Biceps"],
+  ],
+  "2026-10-05": [
+    ["p17", "Gym - Biceps"],
+    ["p1", "Swimming"],
+    ["p3", "Gym - Push Day"],
+    ["p9", "Gym - Pull Day"],
+    ["p7", "Gym"],
+    ["p6", "Gym - Lower Body"],
+    ["p10", "Gym - Push Day & Boxing"],
+    ["p24", "Gym - Upper Body"],
+    ["p4", "Running"],
+    ["p12", "Gym - Shoulders"],
+    ["p16", "Gym - Legs (Squat)"],
+    ["p13", "Gym - Lower Body"],
+    ["p2", "Running"],
+    ["p8", "Gym - Pull Day"],
+    ["p14", "Gym - Leg Day"],
+    ["p15", "Mobility Work"],
+    ["p11", "Running"],
   ],
 };
