@@ -165,4 +165,18 @@ export const participation: Record<string, [string, string][]> = {
     ["p12", "Gym - Chest Day"],
     ["p15", "Gym - Upper Body"],
   ],
+  "2026-10-08": [
+    ["p17", "Gym - Abs"],
+    ["p11", "Streching & Running"],
+    ["p1", "Swimming"],
+    ["p3", "Gym - Pull Day"],
+    ["p7", "Gym - Pull Day"],
+    ["p2", "Running"],
+    ["p9", "Gym - Pull Day"],
+    ["p4", "Bike Riding"],
+    ["p6", "Basketball"],
+    ["p14", "Gym - Back & Biceps"],
+    ["p15", "Volleyball"],
+    ["p10", "Jogging"],
+  ],
 };
